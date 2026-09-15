@@ -44,7 +44,7 @@ Para clonar y probar este proyecto en un entorno local:
    ```
 2. Abrir Unity Hub.
 3. Hacer clic en Add project from disk (Agregar proyecto desde el disco).
-4. Seleccionar la carpeta clonada uces-juegos2-bytecollector.
+4. Seleccionar la carpeta clonada uces-videojuegosII-bytecollecto.
 5. Abrir la escena principal navegando a: Assets/Scenes/00_Bootstrap_Splash.unity.
 
 ---
