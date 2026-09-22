@@ -6,13 +6,13 @@ public class MainMenuNavigation : MonoBehaviour
     // Carga la escena de juego principal
     public void GoToGameplay()
     {
-        SceneManager.LoadScene("02_Gameplay");
+        SceneManager.LoadScene("03_Gameplay");
     }
 
     // Carga la escena de créditos
     public void GoToCredits()
     {
-        SceneManager.LoadScene("03_Credits");
+        SceneManager.LoadScene("02_Credits");
     }
 
     // Carga la escena de opciones
