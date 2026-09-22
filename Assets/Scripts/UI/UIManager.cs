@@ -5,22 +5,22 @@ namespace ByteCollector.UI
 {
     public class UIManager : MonoBehaviour
     {
-        [Header("Paneles de Navegación")]
+        [Header("Paneles de NavegaciÃ³n")]
         [SerializeField] private GameObject panelMain;
         [SerializeField] private GameObject panelOptions;
         [SerializeField] private GameObject panelCredits;
 
-        [Header("Configuración de Escena")]
-        [SerializeField] private string gameplaySceneName = "02_Gameplay";
+        [Header("ConfiguraciÃ³n de Escena")]
+        [SerializeField] private string gameplaySceneName = "03_Gameplay";
 
         // Start is called before the first frame update
         void Start()
         {
-            // Estado inicial garantizado: Menú principal visible, submenús ocultos
+            // Estado inicial garantizado: MenÃº principal visible, submenÃºs ocultos
             ShowMainMenu();
         }
 
-        #region Métodos de Navegación de Escenas
+        #region MÃ©todos de NavegaciÃ³n de Escenas
 
         public void PlayGame()
         {
@@ -38,7 +38,7 @@ namespace ByteCollector.UI
 
         #endregion
 
-        #region Métodos de Transición de Paneles
+        #region MÃ©todos de TransiciÃ³n de Paneles
 
         public void ShowMainMenu()
         {
