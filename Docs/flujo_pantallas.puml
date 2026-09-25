@@ -1,0 +1,61 @@
+@startuml
+skinparam backgroundColor #0D1117
+skinparam defaultFontColor #E6EDF3
+skinparam defaultFontName "Segoe UI", sans-serif
+skinparam ArrowColor #58A6FF
+skinparam RoundCorner 8
+
+skinparam state {
+    BackgroundColor #161B22
+    BorderColor #30363D
+    FontColor #E6EDF3
+}
+
+[*] --> 00_Bootstrap_Splash : Iniciar Aplicación
+
+state 00_Bootstrap_Splash {
+    00_Bootstrap_Splash : • SplashScreenLoader.cs
+    00_Bootstrap_Splash : • Temporizador: 2.5s - 3s
+    00_Bootstrap_Splash : • Logo "Byte Collector"
+}
+
+00_Bootstrap_Splash --> 01_MainMenu : Transición Automática (Timer)
+
+state 01_MainMenu {
+    state Panel_Main {
+        Panel_Main : • Título Top-Center
+        Panel_Main : • Botones (btn_Primary / btn_Secondary)
+        Panel_Main : • UIManager.cs
+    }
+
+    state Panel_Options {
+        Panel_Options : • Modal Superpuesto
+        Panel_Options : • Ajustes de Audio/Pantalla
+        Panel_Options : • btn_Back (Retorno)
+    }
+
+    Panel_Main --> Panel_Options : Clic "Opciones" (SetActive: true)
+    Panel_Options --> Panel_Main : Clic "Volver" (SetActive: false)
+}
+
+01_MainMenu --> 03_Gameplay : Clic "Jugar" (SceneManager.LoadScene)
+01_MainMenu --> 02_Credits : Clic "Créditos" (SceneManager.LoadScene)
+
+state 03_Gameplay {
+    03_Gameplay : • Cámara Ortográfica URP 2D
+    03_Gameplay : • Avatar Provisional ("Byte")
+    03_Gameplay : • HUD con botón Pausa / Menú
+    03_Gameplay : • GameplayNavigation.cs
+}
+
+state 02_Credits {
+    02_Credits : • Integrantes y Cátedra
+    02_Credits : • Atribuciones de Assets
+    02_Credits : • Botón Retorno a Menú
+}
+
+03_Gameplay --> 01_MainMenu : Clic "Pausa / Volver"
+02_Credits --> 01_MainMenu : Clic "Volver al Menú"
+01_MainMenu --> [*] : Clic "Salir" (Application.Quit)
+
+@enduml
