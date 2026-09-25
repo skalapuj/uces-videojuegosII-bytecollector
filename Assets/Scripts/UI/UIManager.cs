@@ -12,6 +12,7 @@ namespace ByteCollector.UI
 
         [Header("Configuración de Escena")]
         [SerializeField] private string gameplaySceneName = "03_Gameplay";
+        [SerializeField] private string creditsSceneName = "02_Credits";
 
         // Start is called before the first frame update
         void Start()
@@ -27,13 +28,18 @@ namespace ByteCollector.UI
             SceneManager.LoadScene(gameplaySceneName);
         }
 
+        public void OpenCreditsScene()
+        {
+            SceneManager.LoadScene(creditsSceneName);
+        }
+
         public void QuitGame()
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-#else
+            #else
             Application.Quit();
-#endif
+            #endif
         }
 
         #endregion
@@ -62,9 +68,9 @@ namespace ByteCollector.UI
             if (panelCredits != null) panelCredits.SetActive(credits);
         }
 
-        #endregion
+        #endregion       
 
-        // Update is called once per frame
+         // Update is called once per frame
         void Update()
         {
 
