@@ -8,9 +8,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2012673702372480442, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 0.5377358
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012673702372480442, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 0.5377358
+      objectReference: {fileID: 0}
+    - target: {fileID: 2012673702372480442, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 0.5377358
+      objectReference: {fileID: 0}
     - target: {fileID: 4417822143717368146, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
       propertyPath: m_text
       value: SALIR
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417822143717368146, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.29803923
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417822143717368146, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417822143717368146, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.4509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417822143717368146, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4283236211
       objectReference: {fileID: 0}
     - target: {fileID: 5391017247180618485, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
       propertyPath: m_Pivot.x
@@ -98,15 +126,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8432315121763198570, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
       propertyPath: m_Color.b
-      value: 0.1254902
+      value: 0.6226415
       objectReference: {fileID: 0}
     - target: {fileID: 8432315121763198570, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
       propertyPath: m_Color.g
-      value: 0.1254902
+      value: 0.6226415
       objectReference: {fileID: 0}
     - target: {fileID: 8432315121763198570, guid: 017da5422b9766a4fb56e369a9e24436, type: 3}
       propertyPath: m_Color.r
-      value: 0.62352943
+      value: 0.6226415
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
