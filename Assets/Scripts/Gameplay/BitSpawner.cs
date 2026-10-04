@@ -1,9 +1,13 @@
+using ByteCollector.UI;
 using UnityEngine;
 
 namespace ByteCollector.Gameplay
 {
     public class BitSpawner : MonoBehaviour
     {
+        [Header("HUD")]
+        [SerializeField] private HUDController hudController;
+
         [Header("Configuración de Prefab")]
         [SerializeField] private GameObject dataBitPrefab;
 
@@ -16,8 +20,19 @@ namespace ByteCollector.Gameplay
 
         private GameObject currentBit;
 
+        private void Awake()
+        {
+            totalCollected = 0;
+        }
         private void Start()
         {
+            if (hudController != null)
+            {
+                hudController.UpdateBitProgress(0, 8);
+                hudController.UpdateScore(0);
+                hudController.UpdateHealth(3);
+            }
+
             SpawnNextBit();
         }
 
@@ -39,6 +54,18 @@ namespace ByteCollector.Gameplay
         {
             totalCollected++;
             Debug.Log($"[BitSpawner] Bit recolectado. Total acumulado: {totalCollected}");
+
+            if (hudController != null)
+            {
+                int currentCycleBits = totalCollected % 8;
+                // Si justo llega a 8, mostramos 8/8 antes de resetear
+                int displayBits = (currentCycleBits == 0 && totalCollected > 0) ? 8 : currentCycleBits;
+
+                hudController.UpdateBitProgress(displayBits, 8);
+                hudController.UpdateScore(totalCollected * 100);
+            }
+
+            
             SpawnNextBit();
         }
 

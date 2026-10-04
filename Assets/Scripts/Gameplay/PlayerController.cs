@@ -15,6 +15,11 @@ namespace ByteCollector.Gameplay
         [SerializeField] private Vector2 verticalLimits = new Vector2(-4.5f, 4.5f);
         [SerializeField] private float boundaryPadding = 0.5f;
 
+        [Header("Márgenes de Seguridad (UI Safe Area)")]
+        [SerializeField] private float topPadding = 1.6f;     // Espacio libre debajo del HUD
+        [SerializeField] private float bottomPadding = 1.4f;  // Espacio libre sobre el botón MENÚ
+        [SerializeField] private float sidePadding = 0.8f;    // Espacio libre en los laterales
+
         private Rigidbody2D rb;
         private Vector2 movementInput;
         private Camera mainCamera;
@@ -73,8 +78,8 @@ namespace ByteCollector.Gameplay
             float cameraHeight = mainCamera.orthographicSize;
             float cameraWidth = cameraHeight * mainCamera.aspect;
 
-            horizontalLimits = new Vector2(-cameraWidth + boundaryPadding, cameraWidth - boundaryPadding);
-            verticalLimits = new Vector2(-cameraHeight + boundaryPadding, cameraHeight - boundaryPadding);
+            horizontalLimits = new Vector2(-cameraWidth + sidePadding, cameraWidth - sidePadding);
+            verticalLimits = new Vector2(-cameraHeight + bottomPadding, cameraHeight - topPadding);
         }
 
         public void SetSpeed(float newSpeed)
