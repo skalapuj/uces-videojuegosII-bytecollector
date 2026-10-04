@@ -6,18 +6,20 @@ namespace ByteCollector.Gameplay
     [RequireComponent(typeof(BoxCollider2D))]
     public class PlayerController : MonoBehaviour
     {
-        [Header("Configuración de Movimiento")]
+        [Header("ConfiguraciÃ³n de Movimiento")]
         [SerializeField] private float moveSpeed = 6f;
 
-        [Header("Límites de la Arena")]
-        [SerializeField] private bool useCameraBounds = true;
-        [SerializeField] private Vector2 horizontalLimits = new Vector2(-8f, 8f);
-        [SerializeField] private Vector2 verticalLimits = new Vector2(-4.5f, 4.5f);
-        [SerializeField] private float boundaryPadding = 0.5f;
+        [Header("MÃ¡rgenes de Seguridad (UI Safe Area)")]
+        [SerializeField] private float topPadding = 1.0f;
+        [SerializeField] private float bottomPadding = 1.2f;
+        [SerializeField] private float sidePadding = 0.5f;
 
         private Rigidbody2D rb;
         private Vector2 movementInput;
         private Camera mainCamera;
+        private Vector2 horizontalLimits;
+        private Vector2 verticalLimits;
+        private float lastAspect;
 
         private void Awake()
         {
@@ -27,14 +29,16 @@ namespace ByteCollector.Gameplay
 
         private void Start()
         {
-            if (useCameraBounds && mainCamera != null)
-            {
-                CalculateCameraBounds();
-            }
+            UpdateCameraBounds();
         }
 
         private void Update()
         {
+            if (mainCamera != null && !Mathf.Approximately(mainCamera.aspect, lastAspect))
+            {
+                UpdateCameraBounds();
+            }
+
             CaptureInput();
         }
 
@@ -66,15 +70,16 @@ namespace ByteCollector.Gameplay
             rb.position = new Vector2(clampedX, clampedY);
         }
 
-        private void CalculateCameraBounds()
+        public void UpdateCameraBounds()
         {
-            if (!mainCamera.orthographic) return;
+            if (mainCamera == null || !mainCamera.orthographic) return;
 
+            lastAspect = mainCamera.aspect;
             float cameraHeight = mainCamera.orthographicSize;
             float cameraWidth = cameraHeight * mainCamera.aspect;
 
-            horizontalLimits = new Vector2(-cameraWidth + boundaryPadding, cameraWidth - boundaryPadding);
-            verticalLimits = new Vector2(-cameraHeight + boundaryPadding, cameraHeight - boundaryPadding);
+            horizontalLimits = new Vector2(-cameraWidth + sidePadding, cameraWidth - sidePadding);
+            verticalLimits = new Vector2(-cameraHeight + bottomPadding, cameraHeight - topPadding);
         }
 
         public void SetSpeed(float newSpeed)
@@ -86,5 +91,8 @@ namespace ByteCollector.Gameplay
         {
             return moveSpeed;
         }
+
+        public Vector2 GetHorizontalLimits() => horizontalLimits;
+        public Vector2 GetVerticalLimits() => verticalLimits;
     }
 }
