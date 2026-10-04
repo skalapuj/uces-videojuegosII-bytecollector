@@ -553,8 +553,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hudController: {fileID: 1068470241}
   dataBitPrefab: {fileID: 7009104473565864898, guid: 493684de11de2ed46a2819481b0d99f6, type: 3}
-  xBounds: {x: -7.5, y: 7.5}
-  yBounds: {x: -4, y: 4}
   totalCollected: 0
 --- !u!4 &481815270
 Transform:
@@ -808,10 +806,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  useCameraBounds: 1
-  horizontalLimits: {x: -8, y: 8}
-  verticalLimits: {x: -4.5, y: 4.5}
-  boundaryPadding: 0.5
+  topPadding: 1
+  bottomPadding: 1.2
+  sidePadding: 0.5
 --- !u!1 &1068470239
 GameObject:
   m_ObjectHideFlags: 0
