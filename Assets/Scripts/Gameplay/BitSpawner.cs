@@ -1,5 +1,5 @@
-using ByteCollector.UI;
 using UnityEngine;
+using ByteCollector.UI;
 
 namespace ByteCollector.Gameplay
 {
@@ -7,23 +7,26 @@ namespace ByteCollector.Gameplay
     {
         [Header("HUD")]
         [SerializeField] private HUDController hudController;
-
-        [Header("Configuración de Prefab")]
+        
+        [Header("ConfiguraciÃ³n de Prefab")]
         [SerializeField] private GameObject dataBitPrefab;
-
-        [Header("Área de Spawn (Coordenadas de Arena)")]
-        [SerializeField] private Vector2 xBounds = new Vector2(-7.5f, 7.5f);
-        [SerializeField] private Vector2 yBounds = new Vector2(-4f, 4f);
 
         [Header("Estado")]
         [SerializeField] private int totalCollected = 0;
 
         private GameObject currentBit;
+        private Camera mainCamera;
+
+        private const float BIT_PADDING = 0.3f;
+        private const float TOP_UI_RESERVE = 1.0f;
+        private const float BOTTOM_UI_RESERVE = 1.0f;
 
         private void Awake()
         {
             totalCollected = 0;
+            mainCamera = Camera.main;
         }
+
         private void Start()
         {
             if (hudController != null)
@@ -40,7 +43,7 @@ namespace ByteCollector.Gameplay
         {
             if (dataBitPrefab == null) return;
 
-            Vector2 spawnPosition = GetRandomSpawnPosition();
+            Vector2 spawnPosition = GetSafeSpawnPosition();
             currentBit = Instantiate(dataBitPrefab, spawnPosition, Quaternion.identity);
 
             DataBit bitComponent = currentBit.GetComponent<DataBit>();
@@ -65,14 +68,25 @@ namespace ByteCollector.Gameplay
                 hudController.UpdateScore(totalCollected * 100);
             }
 
-            
+
             SpawnNextBit();
         }
 
-        private Vector2 GetRandomSpawnPosition()
+        private Vector2 GetSafeSpawnPosition()
         {
-            float randomX = Random.Range(xBounds.x, xBounds.y);
-            float randomY = Random.Range(yBounds.x, yBounds.y);
+            if (mainCamera == null) return Vector2.zero;
+
+            float cameraHeight = mainCamera.orthographicSize;
+            float cameraWidth = cameraHeight * mainCamera.aspect;
+
+            float minX = -cameraWidth + BIT_PADDING + 0.4f;
+            float maxX = cameraWidth - BIT_PADDING - 0.4f;
+            float minY = -cameraHeight + BOTTOM_UI_RESERVE;
+            float maxY = cameraHeight - TOP_UI_RESERVE;
+
+            float randomX = Random.Range(minX, maxX);
+            float randomY = Random.Range(minY, maxY);
+
             return new Vector2(randomX, randomY);
         }
 
@@ -83,9 +97,20 @@ namespace ByteCollector.Gameplay
 
         private void OnDrawGizmosSelected()
         {
+            Camera cam = Camera.main;
+            if (cam == null || !cam.orthographic) return;
+
             Gizmos.color = Color.green;
-            Vector3 center = new Vector3((xBounds.x + xBounds.y) * 0.5f, (yBounds.x + yBounds.y) * 0.5f, 0);
-            Vector3 size = new Vector3(Mathf.Abs(xBounds.y - xBounds.x), Mathf.Abs(yBounds.y - yBounds.y), 0);
+            float h = cam.orthographicSize;
+            float w = h * cam.aspect;
+
+            float minX = -w + BIT_PADDING + 0.4f;
+            float maxX = w - BIT_PADDING - 0.4f;
+            float minY = -h + BOTTOM_UI_RESERVE;
+            float maxY = h - TOP_UI_RESERVE;
+
+            Vector3 center = new Vector3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f, 0);
+            Vector3 size = new Vector3(Mathf.Abs(maxX - minX), Mathf.Abs(maxY - minY), 0);
             Gizmos.DrawWireCube(center, size);
         }
     }
