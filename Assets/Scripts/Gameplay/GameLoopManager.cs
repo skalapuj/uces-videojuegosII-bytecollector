@@ -17,6 +17,9 @@ namespace ByteCollector.Gameplay
         [SerializeField] private HUDController hudController;
         [SerializeField] private Camera mainCamera;
 
+        [Header("Glitches")]
+        [SerializeField] private GlitchSpawner glitchSpawner;
+
         [Header("UI de Notificación de Sector")]
         [SerializeField] private TextMeshProUGUI txtSectorNotification;
         [SerializeField] private Image imgScreenFlash;
@@ -68,6 +71,8 @@ namespace ByteCollector.Gameplay
             {
                 imgScreenFlash.color = new Color(1f, 1f, 1f, 0f);
             }
+
+            if (glitchSpawner != null) glitchSpawner.SetSector(1);
 
             StartCoroutine(ShowSectorNotification("SECTOR 01: CACHÉ"));
         }
@@ -121,6 +126,8 @@ namespace ByteCollector.Gameplay
             {
                 mainCamera.backgroundColor = sector2BgColor;
             }
+
+            if (glitchSpawner != null) glitchSpawner.SetSector(2);
 
             yield return StartCoroutine(ShowSectorNotification("SECTOR 02: MEMORIA PRINCIPAL"));
         }
