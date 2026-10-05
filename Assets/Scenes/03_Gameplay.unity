@@ -883,8 +883,9 @@ MonoBehaviour:
   playerController: {fileID: 999259277}
   hudController: {fileID: 1068470241}
   mainCamera: {fileID: 236577816}
+  glitchSpawner: {fileID: 1797140330}
   txtSectorNotification: {fileID: 2046238054}
-  imgScreenFlash: {fileID: 0}
+  imgScreenFlash: {fileID: 536430875}
   sector1Target: 8
   sector2Target: 16
   sector1BgColor: {r: 0.05, g: 0.05, b: 0.08, a: 1}
@@ -1778,6 +1779,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9b8075aea9d231419071a142267c0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1797140329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1797140331}
+  - component: {fileID: 1797140330}
+  m_Layer: 0
+  m_Name: _GlitchSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1797140330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797140329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a672e4495a9510945b104ad05c5761e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 999259274}
+  leakPrefab: {fileID: 478767537197576862, guid: 00362f3b6d0062e42aca21606526a215, type: 3}
+  corruptedTilePrefab: {fileID: 534008827074354883, guid: 0b744f00037b5ce4fbd0eba0d3720844, type: 3}
+  sector1LeakInterval: 10
+  sector1MaxLeaks: 1
+  sector2LeakInterval: 5
+  sector2MaxLeaks: 3
+  tileInterval: 3
+  minSpawnDistanceFromPlayer: 3
+  topUiReserve: 1
+  bottomUiReserve: 1.2
+--- !u!4 &1797140331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797140329}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 64.27545, y: 156.08162, z: -0.60154235}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1825587322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2562,3 +2618,4 @@ SceneRoots:
   - {fileID: 413086293}
   - {fileID: 481815270}
   - {fileID: 902763283}
+  - {fileID: 1797140331}
