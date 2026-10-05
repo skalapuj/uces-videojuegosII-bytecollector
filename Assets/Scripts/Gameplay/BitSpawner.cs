@@ -56,18 +56,19 @@ namespace ByteCollector.Gameplay
         public void OnBitCollected()
         {
             totalCollected++;
-            Debug.Log($"[BitSpawner] Bit recolectado. Total acumulado: {totalCollected}");
 
-            if (hudController != null)
+            if (GameLoopManager.Instance != null)
             {
+                GameLoopManager.Instance.RegisterBitCollected();
+            }
+            else if (hudController != null)
+            {
+                // Respaldo de seguridad si se corre la escena sin GameManager
                 int currentCycleBits = totalCollected % 8;
-                // Si justo llega a 8, mostramos 8/8 antes de resetear
                 int displayBits = (currentCycleBits == 0 && totalCollected > 0) ? 8 : currentCycleBits;
-
                 hudController.UpdateBitProgress(displayBits, 8);
                 hudController.UpdateScore(totalCollected * 100);
             }
-
 
             SpawnNextBit();
         }
