@@ -1,0 +1,138 @@
+@startuml Architecture_ByteCollector
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+package "ByteCollector.Gameplay" {
+    class PlayerController {
+        - moveSpeed: float
+        - topPadding: float
+        - bottomPadding: float
+        - sidePadding: float
+        - rb: Rigidbody2D
+        - movementInput: Vector2
+        - mainCamera: Camera
+        - horizontalLimits: Vector2
+        - verticalLimits: Vector2
+        + UpdateCameraBounds(): void
+        + SetSpeed(newSpeed: float): void
+        + GetSpeed(): float
+        + GetHorizontalLimits(): Vector2
+        + GetVerticalLimits(): Vector2
+    }
+
+    class PlayerHealth {
+        - maxLives: int
+        - currentLives: int
+        - invulnerabilityDuration: float
+        - blinkInterval: float
+        - isInvulnerable: bool
+        - isDead: bool
+        - spriteRenderer: SpriteRenderer
+        - playerController: PlayerController
+        + CurrentLives: int
+        + IsDead: bool
+        + TakeDamage(damage: int): void
+        - CheckHazardCollision(other: GameObject): void
+        - InvulnerabilityRoutine(): IEnumerator
+        - TriggerGameOver(): void
+    }
+
+    class DataBit {
+        - spawner: BitSpawner
+        + Initialize(spawnerReference: BitSpawner): void
+        - OnTriggerEnter2D(collision: Collider2D): void
+        - Collect(): void
+    }
+
+    class BitSpawner {
+        - hudController: HUDController
+        - dataBitPrefab: GameObject
+        - totalCollected: int
+        - currentBit: GameObject
+        - mainCamera: Camera
+        + SpawnNextBit(): void
+        + OnBitCollected(): void
+        + GetTotalCollected(): int
+        - GetSafeSpawnPosition(): Vector2
+    }
+
+    class GameLoopManager <<Singleton>> {
+        + {static} Instance: GameLoopManager
+        - playerController: PlayerController
+        - hudController: HUDController
+        - mainCamera: Camera
+        - txtSectorNotification: TextMeshProUGUI
+        - imgScreenFlash: Image
+        - sector1Target: int
+        - sector2Target: int
+        - sector1BgColor: Color
+        - sector2BgColor: Color
+        - currentSector: int
+        - currentBits: int
+        - totalScore: int
+        + RegisterBitCollected(): void
+        - TriggerMemoryFlushRoutine(): IEnumerator
+        - FlashScreenRoutine(): IEnumerator
+        - ShowSectorNotification(message: string): IEnumerator
+    }
+}
+
+package "ByteCollector.UI" {
+    class HUDController {
+        - healthIcons: Image[]
+        - healthActiveColor: Color
+        - healthInactiveColor: Color
+        - bitProgressText: TextMeshProUGUI
+        - bitProgressBar: Slider
+        - scoreText: TextMeshProUGUI
+        + UpdateHealth(currentLives: int): void
+        + UpdateBitProgress(currentBits: int, targetBits: int): void
+        + UpdateScore(newScore: int): void
+    }
+
+    class GameOverUI {
+        + RestartGame(): void
+        + GoToMainMenu(): void
+    }
+
+    class UIManager {
+        - panelMain: GameObject
+        - panelOptions: GameObject
+        - panelCredits: GameObject
+        - gameplaySceneName: string
+        - creditsSceneName: string
+        + PlayGame(): void
+        + OpenCreditsScene(): void
+        + QuitGame(): void
+        + ShowMainMenu(): void
+        + ShowOptions(): void
+        + ShowCredits(): void
+    }
+}
+
+package "Entities tagged as Hazard / Glitch" {
+    class ObstacleEntity <<Tag: Hazard / Glitch>> {
+        + Collider2D
+        + Collision or trigger response
+    }
+}
+
+' Relaciones de gameplay
+PlayerHealth --> PlayerController : desactiva movimiento y frena
+PlayerHealth --> HUDController : actualiza vidas
+PlayerHealth ..> ObstacleEntity : detecta Hazard / Glitch
+PlayerHealth --> GameOverUI : activa panel de fin de partida
+
+DataBit --> BitSpawner : notifica recolección
+BitSpawner ..> DataBit : instancia prefabricados
+BitSpawner --> GameLoopManager : avisa recolección de bits
+BitSpawner --> HUDController : actualiza progreso si no hay GameLoop
+
+GameLoopManager --> PlayerController : aumenta velocidad al pasar de sector
+GameLoopManager --> HUDController : actualiza score y progreso
+GameLoopManager --> Camera : cambia color de fondo
+
+' Relaciones de navegación UI
+UIManager --> GameOverUI : navegación de menú y escenas
+@enduml
