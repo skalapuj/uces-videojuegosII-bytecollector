@@ -10,6 +10,8 @@ namespace ByteCollector.Gameplay
     {
         public static GameLoopManager Instance { get; private set; }
 
+        public static event System.Action MemoryFlushed;
+
         [Header("Referencias de Escena")]
         [SerializeField] private PlayerController playerController;
         [SerializeField] private HUDController hudController;
@@ -93,6 +95,7 @@ namespace ByteCollector.Gameplay
         {
             currentSector = 2;
             totalScore += 1000; // Bonificación Memory Flush
+            MemoryFlushed?.Invoke();
 
             if (hudController != null)
             {
