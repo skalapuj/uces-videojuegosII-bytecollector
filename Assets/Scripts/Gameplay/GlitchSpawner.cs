@@ -9,11 +9,11 @@ namespace ByteCollector.Gameplay
         [SerializeField] private GlitchEnemy leakPrefab;
         [SerializeField] private GameObject corruptedTilePrefab;
 
-        [Header("Sector 1 (Cache)")]
+        [Header("Sector 1 (Caché)")]
         [SerializeField] private float sector1LeakInterval = 10f;
         [SerializeField] private int sector1MaxLeaks = 1;
 
-        [Header("Sector 2 (RAM) - mas presion")]
+        [Header("Sector 2 (RAM) - más presión")]
         [SerializeField] private float sector2LeakInterval = 5f;
         [SerializeField] private int sector2MaxLeaks = 3;
         [SerializeField] private float tileInterval = 3f;
