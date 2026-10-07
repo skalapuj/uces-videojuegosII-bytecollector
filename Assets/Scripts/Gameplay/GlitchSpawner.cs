@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 namespace ByteCollector.Gameplay
 {
@@ -77,8 +77,8 @@ namespace ByteCollector.Gameplay
             for (int i = 0; i < 10; i++)
             {
                 Vector2 pos = new Vector2(
- Random.Range(-w + 0.5f, w - 0.5f),
- Random.Range(-h + bottomUiReserve, h - topUiReserve));
+                Random.Range(-w + 0.5f, w - 0.5f),
+                Random.Range(-h + bottomUiReserve, h - topUiReserve));
                 if (player == null ||
                 Vector2.Distance(pos, player.position) >= minSpawnDistanceFromPlayer)
                     return pos;
@@ -87,11 +87,3 @@ namespace ByteCollector.Gameplay
         }
     }
 }
-
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 namespace ByteCollector.Gameplay
 {
     [RequireComponent(typeof(Rigidbody2D))]
@@ -6,7 +6,7 @@ namespace ByteCollector.Gameplay
     public class GlitchEnemy : MonoBehaviour
     {
         public static int ActiveCount { get; private set; }
-        [Header("Persecucion")]
+        [Header("Persecución")]
         [SerializeField] private float speed = 2f;
         private Transform target;
         private Rigidbody2D rb;
