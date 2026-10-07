@@ -5,7 +5,7 @@ namespace ByteCollector.Gameplay
 {
     public class BitSpawner : MonoBehaviour
     {
-        [Header("HUD (Respaldo si no hay GameLoopManager)")]
+        [Header("HUD")]
         [SerializeField] private HUDController hudController;
 
         [Header("Configuración de Prefab")]
@@ -29,14 +29,6 @@ namespace ByteCollector.Gameplay
 
         private void Start()
         {
-            // Solo inicializa el HUD manualmente si se prueba la escena de manera aislada sin el GameManager principal
-            if (GameLoopManager.Instance == null && hudController != null)
-            {
-                hudController.UpdateBitProgress(0, 8);
-                hudController.UpdateScore(0);
-                hudController.UpdateHealth(3);
-            }
-
             SpawnNextBit();
         }
 
