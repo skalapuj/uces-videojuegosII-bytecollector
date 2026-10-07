@@ -9,6 +9,7 @@ namespace ByteCollector.UI
 
         public void ReturnToMainMenu()
         {
+            Time.timeScale = 1f; // Restaurar la velocidad del juego al salir de la escena
             SceneManager.LoadScene(mainMenuSceneName);
         }
     }
