@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -15,7 +15,7 @@ namespace ByteCollector.UI
         [SerializeField] private TextMeshProUGUI bitProgressText;
         [SerializeField] private Slider bitProgressBar;
 
-        [Header("Puntuaci�n")]
+        [Header("Puntuación")]
         [SerializeField] private TextMeshProUGUI scoreText;
 
         public void UpdateHealth(int currentLives)
