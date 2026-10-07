@@ -1634,7 +1634,7 @@ GameObject:
   - component: {fileID: 949372566}
   - component: {fileID: 949372565}
   m_Layer: 5
-  m_Name: Options_Txt_Title
+  m_Name: Txt_OptionsTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2846,7 +2846,7 @@ GameObject:
   - component: {fileID: 1710508068}
   - component: {fileID: 1710508067}
   m_Layer: 5
-  m_Name: Main_Txt_Title
+  m_Name: Txt_MainTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
