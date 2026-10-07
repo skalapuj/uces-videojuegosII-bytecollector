@@ -1516,7 +1516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2967036655757827077, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
       propertyPath: m_text
-      value: "MEN\xDA\n"
+      value: "MEN\xDA"
       objectReference: {fileID: 0}
     - target: {fileID: 4904187279886458457, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
       propertyPath: m_Name
