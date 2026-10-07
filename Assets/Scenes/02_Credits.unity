@@ -619,6 +619,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1194740184}
     m_Modifications:
+    - target: {fileID: 1120338416463800557, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120338416463800557, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120338416463800557, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1095190561}
+    - target: {fileID: 1120338416463800557, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120338416463800557, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReturnToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120338416463800557, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ByteCollector.UI.GameplayNavigation, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1120338416463800557, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967036655757827077, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
+      propertyPath: m_text
+      value: "VOLVER AL MEN\xDA"
+      objectReference: {fileID: 0}
     - target: {fileID: 4904187279886458457, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
       propertyPath: m_Name
       value: btn_ReturnToMenu
@@ -702,7 +734,6 @@ PrefabInstance:
     - target: {fileID: 6823785029568989090, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
