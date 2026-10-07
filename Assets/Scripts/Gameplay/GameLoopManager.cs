@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -15,11 +15,11 @@ namespace ByteCollector.Gameplay
         [SerializeField] private HUDController hudController;
         [SerializeField] private Camera mainCamera;
 
-        [Header("UI de Notificación de Sector")]
+        [Header("UI de Notificacion de Sector")]
         [SerializeField] private TextMeshProUGUI txtSectorNotification;
         [SerializeField] private Image imgScreenFlash;
 
-        [Header("Configuración de Sectores")]
+        [Header("Configuracion de Sectores")]
         [SerializeField] private int sector1Target = 8;
         [SerializeField] private int sector2Target = 16;
         [SerializeField] private Color sector1BgColor = new Color(0.05f, 0.05f, 0.08f, 1f);
@@ -67,7 +67,7 @@ namespace ByteCollector.Gameplay
                 imgScreenFlash.color = new Color(1f, 1f, 1f, 0f);
             }
 
-            StartCoroutine(ShowSectorNotification("SECTOR 01: CACHÉ"));
+            StartCoroutine(ShowSectorNotification("SECTOR 01: CACHE"));
         }
 
         public void RegisterBitCollected()
@@ -92,7 +92,7 @@ namespace ByteCollector.Gameplay
         private IEnumerator TriggerMemoryFlushRoutine()
         {
             currentSector = 2;
-            totalScore += 1000; // Bonificación Memory Flush
+            totalScore += 1000; // BonificaciÃ³n Memory Flush
 
             if (hudController != null)
             {
