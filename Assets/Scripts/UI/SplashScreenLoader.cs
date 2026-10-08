@@ -1,25 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SplashScreenLoader : MonoBehaviour
+namespace ByteCollector.UI
 {
-    [SerializeField] private float waitTime = 3f;
-    [SerializeField] private string nextSceneName = "01_MainMenu";
-    // Start is called before the first frame update
-    void Start()
+    public class SplashScreenLoader : MonoBehaviour
     {
-        StartCoroutine(LoadNextSceneRoutine());
-    }
-    private IEnumerator LoadNextSceneRoutine()
-    {
-        yield return new WaitForSeconds(waitTime);
-        SceneManager.LoadScene(nextSceneName);
-    }
+        [SerializeField] private float waitTime = 3f;
+        [SerializeField] private string nextSceneName = "01_MainMenu";
 
-    // Update is called once per frame
-    void Update()
-    {
+        private void Start()
+        {
+            StartCoroutine(LoadNextSceneRoutine());
+        }
+
+        private IEnumerator LoadNextSceneRoutine()
+        {
+            yield return new WaitForSeconds(waitTime);
+            SceneManager.LoadScene(nextSceneName);
+        }
     }
 }

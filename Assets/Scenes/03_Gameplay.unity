@@ -488,7 +488,7 @@ GameObject:
   - component: {fileID: 413086293}
   - component: {fileID: 413086292}
   m_Layer: 0
-  m_Name: _SceneController
+  m_Name: _NavigationManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1517,7 +1517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2967036655757827077, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
       propertyPath: m_text
-      value: "MEN\xDA\n"
+      value: "MEN\xDA"
       objectReference: {fileID: 0}
     - target: {fileID: 4904187279886458457, guid: fb0985a110c8a644591cebf7cae0bf02, type: 3}
       propertyPath: m_Name

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8493792034756627075}
   - component: {fileID: 8506834530592700424}
   m_Layer: 5
-  m_Name: Border_Neon
+  m_Name: Img_BorderNeon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 2264629671945554083}
   - component: {fileID: 2283466871269357171}
   m_Layer: 5
-  m_Name: panel_Container_Modal
+  m_Name: Panel_Container_Modal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

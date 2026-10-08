@@ -14,8 +14,7 @@ namespace ByteCollector.UI
         [SerializeField] private string gameplaySceneName = "03_Gameplay";
         [SerializeField] private string creditsSceneName = "02_Credits";
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             // Estado inicial garantizado: Menú principal visible, submenús ocultos
             ShowMainMenu();
@@ -68,12 +67,6 @@ namespace ByteCollector.UI
             if (panelCredits != null) panelCredits.SetActive(credits);
         }
 
-        #endregion       
-
-         // Update is called once per frame
-        void Update()
-        {
-
-        }
+        #endregion
     }
 }

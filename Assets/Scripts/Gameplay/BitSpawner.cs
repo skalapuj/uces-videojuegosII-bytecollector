@@ -7,7 +7,7 @@ namespace ByteCollector.Gameplay
     {
         [Header("HUD")]
         [SerializeField] private HUDController hudController;
-        
+
         [Header("Configuración de Prefab")]
         [SerializeField] private GameObject dataBitPrefab;
 
@@ -29,13 +29,6 @@ namespace ByteCollector.Gameplay
 
         private void Start()
         {
-            if (hudController != null)
-            {
-                hudController.UpdateBitProgress(0, 8);
-                hudController.UpdateScore(0);
-                hudController.UpdateHealth(3);
-            }
-
             SpawnNextBit();
         }
 
