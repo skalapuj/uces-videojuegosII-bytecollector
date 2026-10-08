@@ -138,5 +138,14 @@ namespace ByteCollector.Gameplay
 
             Time.timeScale = 0f; // Pausa física del juego
         }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            CheckHazardCollision(collision.gameObject);
+        }
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            CheckHazardCollision(collision.gameObject);
+        }
     }
 }

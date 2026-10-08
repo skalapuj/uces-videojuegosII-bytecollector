@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -10,16 +10,21 @@ namespace ByteCollector.Gameplay
     {
         public static GameLoopManager Instance { get; private set; }
 
+        public static event System.Action MemoryFlushed;
+
         [Header("Referencias de Escena")]
         [SerializeField] private PlayerController playerController;
         [SerializeField] private HUDController hudController;
         [SerializeField] private Camera mainCamera;
 
-        [Header("UI de Notificación de Sector")]
+        [Header("Glitches")]
+        [SerializeField] private GlitchSpawner glitchSpawner;
+
+        [Header("UI de NotificaciÃ³n de Sector")]
         [SerializeField] private TextMeshProUGUI txtSectorNotification;
         [SerializeField] private Image imgScreenFlash;
 
-        [Header("Configuración de Sectores")]
+        [Header("ConfiguraciÃ³n de Sectores")]
         [SerializeField] private int sector1Target = 8;
         [SerializeField] private int sector2Target = 16;
         [SerializeField] private Color sector1BgColor = new Color(0.05f, 0.05f, 0.08f, 1f);
@@ -67,7 +72,9 @@ namespace ByteCollector.Gameplay
                 imgScreenFlash.color = new Color(1f, 1f, 1f, 0f);
             }
 
-            StartCoroutine(ShowSectorNotification("SECTOR 01: CACHÉ"));
+            if (glitchSpawner != null) glitchSpawner.SetSector(1);
+
+            StartCoroutine(ShowSectorNotification("SECTOR 01: CACHÃ‰"));
         }
 
         public void RegisterBitCollected()
@@ -92,7 +99,8 @@ namespace ByteCollector.Gameplay
         private IEnumerator TriggerMemoryFlushRoutine()
         {
             currentSector = 2;
-            totalScore += 1000; // Bonificación Memory Flush
+            totalScore += 1000; // BonificaciÃ³n Memory Flush
+            MemoryFlushed?.Invoke();
 
             if (hudController != null)
             {
@@ -118,6 +126,8 @@ namespace ByteCollector.Gameplay
             {
                 mainCamera.backgroundColor = sector2BgColor;
             }
+
+            if (glitchSpawner != null) glitchSpawner.SetSector(2);
 
             yield return StartCoroutine(ShowSectorNotification("SECTOR 02: MEMORIA PRINCIPAL"));
         }

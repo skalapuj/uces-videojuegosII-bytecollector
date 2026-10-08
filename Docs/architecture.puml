@@ -33,6 +33,8 @@ package "ByteCollector.Gameplay" {
         + CurrentLives: int
         + IsDead: bool
         + TakeDamage(damage: int): void
+        - OnTriggerStay2D(collision: Collider2D): void
+        - OnCollisionStay2D(collision: Collision2D): void
         - CheckHazardCollision(other: GameObject): void
         - InvulnerabilityRoutine(): IEnumerator
         - TriggerGameOver(): void
@@ -59,11 +61,13 @@ package "ByteCollector.Gameplay" {
 
     class GameLoopManager <<Singleton>> {
         + {static} Instance: GameLoopManager
+        + {static} MemoryFlushed: event Action
         - playerController: PlayerController
         - hudController: HUDController
         - mainCamera: Camera
         - txtSectorNotification: TextMeshProUGUI
         - imgScreenFlash: Image
+        - glitchSpawner: GlitchSpawner
         - sector1Target: int
         - sector2Target: int
         - sector1BgColor: Color
@@ -75,6 +79,40 @@ package "ByteCollector.Gameplay" {
         - TriggerMemoryFlushRoutine(): IEnumerator
         - FlashScreenRoutine(): IEnumerator
         - ShowSectorNotification(message: string): IEnumerator
+    }
+
+    class GlitchSpawner {
+        - player: Transform
+        - leakPrefab: GlitchEnemy
+        - corruptedTilePrefab: GameObject
+        - sector1LeakInterval: float
+        - sector1MaxLeaks: int
+        - sector2LeakInterval: float
+        - sector2MaxLeaks: int
+        - tileInterval: float
+        - minSpawnDistanceFromPlayer: float
+        - topUiReserve: float
+        - bottomUiReserve: float
+        - cam: Camera
+        + SetSector(sector: int): void
+        - LeakLoop(interval: float, maxLeaks: int): IEnumerator
+        - TileLoop(): IEnumerator
+        - GetSpawnPosition(): Vector2
+    }
+
+    class GlitchEnemy {
+        + {static} ActiveCount: int
+        - speed: float
+        - target: Transform
+        - rb: Rigidbody2D
+        + Initialize(playerTransform: Transform): void
+        - HandleMemoryFlush(): void
+    }
+
+    class CorruptedTile {
+        - warningTime: float
+        - activeTime: float
+        - Lifecycle(): IEnumerator
     }
 }
 
@@ -113,7 +151,7 @@ package "ByteCollector.UI" {
 
 package "Entities tagged as Hazard / Glitch" {
     class ObstacleEntity <<Tag: Hazard / Glitch>> {
-        + Collider2D
+        + Collider2D (trigger)
         + Collision or trigger response
     }
 }
@@ -132,6 +170,16 @@ BitSpawner --> HUDController : actualiza progreso si no hay GameLoop
 GameLoopManager --> PlayerController : aumenta velocidad al pasar de sector
 GameLoopManager --> HUDController : actualiza score y progreso
 GameLoopManager --> Camera : cambia color de fondo
+GameLoopManager --> GlitchSpawner : SetSector(1) al iniciar / SetSector(2) tras el Memory Flush
+
+' Relaciones de enemigos y obstaculos
+GlitchSpawner ..> GlitchEnemy : instancia Glitch_Leak (Sector 1 y 2)
+GlitchSpawner ..> CorruptedTile : instancia baldosas (Sector 2)
+GlitchSpawner --> PlayerController : usa el Transform del jugador y mantiene distancia minima
+GlitchEnemy ..> GameLoopManager : se suscribe a MemoryFlushed y se destruye
+GlitchEnemy --> PlayerController : persigue con Vector2.MoveTowards
+GlitchEnemy ..|> ObstacleEntity : tag Hazard
+CorruptedTile ..|> ObstacleEntity : tag Hazard (fase activa)
 
 ' Relaciones de navegación UI
 UIManager --> GameOverUI : navegación de menú y escenas
