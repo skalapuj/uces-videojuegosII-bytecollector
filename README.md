@@ -23,16 +23,18 @@ La implementación actual responde a una estructura simple pero funcional:
 - El gestor de partida lleva el control del progreso por sectores, el puntaje y el aumento de dificultad.
 - El HUD refleja vidas, progreso del buffer de bits y puntuación.
 - El sistema de daño aplica invulnerabilidad temporal y dispara la pantalla de Game Over cuando el jugador queda sin vidas.
+- Los enemigos `Glitch (Leak)` persiguen al jugador y, en el Sector 2, aparecen baldosas corruptas (`CorruptedTile`); `GlitchSpawner` regula su frecuencia según el sector activo.
+- Al activarse el Memory Flush, `GameLoopManager` emite el evento estático `MemoryFlushed` y todos los glitches en pantalla se destruyen.
 
 ---
 
 ## 🗺️ Diagrama de arquitectura
-El flujo de navegación entre escenas y paneles modales está modelado mediante **PlantUML** en el archivo [`docs/flujo_pantallas.puml`](docs/flujo_pantallas.puml).
-![Flujo de Pantallas y Navegación](docs/flujo_pantallas.png)
+El flujo de navegación entre escenas y paneles modales está modelado mediante **PlantUML** en el archivo [`Docs/flujo_pantallas.puml`](Docs/flujo_pantallas.puml).
+![Flujo de Pantallas y Navegación](Docs/flujo_pantallas.png)
 
-El diagrama de clases que detalla la relación entre controladores, gestores de ciclo de vida y entidades de colisión se encuentra modelado en [`docs/architecture.puml`](docs/architecture.puml).
+El diagrama de clases que detalla la relación entre controladores, gestores de ciclo de vida y entidades de colisión se encuentra modelado en [`Docs/architecture.puml`](Docs/architecture.puml).
 
-![Arquitectura](docs/architecture.png)
+![Arquitectura](Docs/architecture.png)
 ---
 
 ## 📐 Diagrama de clases actual
@@ -46,6 +48,9 @@ El diagrama de clases del proyecto se centra en este conjunto de entidades:
 - `HUDController`
 - `GameOverUI`
 - `UIManager`
+- `GlitchEnemy`
+- `GlitchSpawner`
+- `CorruptedTile`
 
 
 ---
@@ -58,7 +63,10 @@ El diagrama de clases del proyecto se centra en este conjunto de entidades:
 - `PlayerHealth`: manejo de vidas, daño, invulnerabilidad y fin de partida.
 - `DataBit`: elemento recolectable con detección de trigger por contacto con el jugador.
 - `BitSpawner`: creación procedural de bits en posiciones seguras dentro de la cámara.
-- `GameLoopManager`: control del sector activo, acumulación de bits, score y transición entre etapas.
+- `GameLoopManager`: control del sector activo, acumulación de bits, score y transición entre etapas. Emite el evento estático `MemoryFlushed` y activa al `GlitchSpawner` según el sector.
+- `GlitchEnemy`: enemigo `Leak`; persigue al jugador con `Vector2.MoveTowards` (velocidad `speed` configurable) y se destruye al recibir el evento `MemoryFlushed`.
+- `CorruptedTile`: baldosa dañina del Sector 2; arranca en fase de aviso (30 % de alfa, sin colisión) y luego pasa a fase activa con daño.
+- `GlitchSpawner`: genera `Glitch_Leak` y `CorruptedTile` según el sector (frecuencia y cantidad máxima), respetando una distancia mínima al jugador y los márgenes de la UI.
 
 ### UI
 
@@ -87,13 +95,32 @@ El diagrama de clases del proyecto se centra en este conjunto de entidades:
 - puntaje con formato `SCORE: 000000`
 
 ### 4. Sistema de daño
-`PlayerHealth` detecta colisiones con objetos marcados como `Hazard` o `Glitch`, reduce vidas y activa una corrutina de invulnerabilidad con parpadeo visual.
+`PlayerHealth` detecta colisiones con objetos marcados como `Hazard` o `Glitch` tanto al entrar en contacto (`OnTriggerEnter2D` / `OnCollisionEnter2D`) como al permanecer en él (`OnTriggerStay2D` / `OnCollisionStay2D`), reduce vidas y activa una corrutina de invulnerabilidad con parpadeo visual. Durante la invulnerabilidad no se recibe daño, por lo que un enemigo que se queda encima solo golpea una vez por ventana de 1 segundo.
 
 ### 5. Fin de partida
 Cuando `currentLives <= 0`, `PlayerHealth` desactiva el movimiento del jugador, frena el `Rigidbody2D`, activa el panel de Game Over y congela el tiempo con `Time.timeScale = 0f`.
 
 ### 6. Progresión por sectores
-`GameLoopManager` inicia en `Sector 01`, cuenta los bits recolectados y cuando alcanza la meta de ese sector pasa a `Sector 02`, aumenta la velocidad del jugador aproximadamente un 30% y cambia el fondo de la cámara.
+`GameLoopManager` inicia en `Sector 01`, cuenta los bits recolectados y cuando alcanza la meta de ese sector ejecuta el *Memory Flush*: emite el evento `MemoryFlushed`, otorga +1000 puntos, pasa a `Sector 02`, aumenta la velocidad del jugador aproximadamente un 30%, muestra un destello blanco y cambia el fondo de la cámara.
+
+### 7. Enemigos Glitch y baldosas corruptas
+`GlitchSpawner` es activado por `GameLoopManager` mediante `SetSector(sector)`:
+- **Sector 01 (Caché):** un `Glitch_Leak` cada 10 segundos, con un máximo de 1 enemigo simultáneo.
+- **Sector 02 (Memoria Principal):** un `Glitch_Leak` cada 5 segundos (hasta 3 simultáneos) y, en paralelo, una `CorruptedTile` cada 3 segundos.
+
+`GlitchEnemy` persigue la posición del jugador y se destruye cuando `GameLoopManager` emite `MemoryFlushed`. `CorruptedTile` permanece 1 segundo en fase de aviso (sin colisión) y 4 segundos en fase activa (con daño) antes de destruirse. Ambos prefabs usan el tag `Hazard` y un `Collider2D` configurado como trigger.
+
+---
+
+## ⏱️ Línea Temporal y Secuencia del Gameplay
+
+### Fases de Ejecución
+
+1. **Inicialización (Frame 0):** `PlayerController` y `PlayerHealth` delimitan los límites ortográficos y registran las vidas en el HUD. `GameLoopManager` arranca el Sector 1 (`SetSector(1)`) y `BitSpawner` genera el primer coleccionable.
+2. **Sector 01 (Caché):** presión moderada, con un intervalo de generación de leaks de 10 segundos (máximo 1 enemigo en simultáneo). `BitSpawner` respawnea bits en posiciones seguras conforme el jugador los absorbe.
+3. **Punto de Quiebre (Memory Flush):** al alcanzar el 8.º bit, `GameLoopManager` dispara el evento estático global `MemoryFlushed`, eliminando a los enemigos presentes en pantalla, otorgando +1000 puntos, aumentando la velocidad del jugador un 30 % e iniciando el destello visual.
+4. **Sector 02 (Memoria Principal):** se eleva la dificultad reduciendo el tiempo de aparición de enemigos a 5 segundos (hasta 3 activos) y activando en paralelo la rutina de baldosas corruptas (`CorruptedTile`).
+5. **Ciclo de Daño y Fin de Partida:** detección de contacto con entidades `Hazard` / `Glitch` mediante `OnTriggerEnter2D` y `OnTriggerStay2D`. Cada golpe resta una vida y dispara 1 segundo de parpadeo de invulnerabilidad; al llegar a 0 vidas se despliega la pantalla modal de colapso y se congela el tiempo de ejecución (`Time.timeScale = 0f`).
 
 ---
 
