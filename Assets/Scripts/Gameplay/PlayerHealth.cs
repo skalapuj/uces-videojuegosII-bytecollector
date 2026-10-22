@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using ByteCollector.UI;
+using ByteCollector.Commands;
+using ByteCollector.Events;
 
 namespace ByteCollector.Gameplay
 {
@@ -17,7 +19,9 @@ namespace ByteCollector.Gameplay
 
         [Header("Referencias")]
         [SerializeField] private HUDController hudController;
-        [SerializeField] private GameObject gameOverPanel;
+
+        [Header("Eventos de UI (Observer)")]
+        [SerializeField] private PopupEventSO popupChannel;
 
         private SpriteRenderer spriteRenderer;
         private PlayerController playerController;
@@ -39,11 +43,6 @@ namespace ByteCollector.Gameplay
             if (hudController != null)
             {
                 hudController.UpdateHealth(currentLives);
-            }
-
-            if (gameOverPanel != null)
-            {
-                gameOverPanel.SetActive(false);
             }
         }
 
@@ -130,13 +129,21 @@ namespace ByteCollector.Gameplay
                 rb.velocity = Vector2.zero;
             }
 
-            // Desplegar modal de Game Over
-            if (gameOverPanel != null)
+            if (popupChannel != null)
             {
-                gameOverPanel.SetActive(true);
-            }
+                PopupData deathPopupData = new PopupData(
+                    "MEMORY OVERFLOW",
+                    "¿Deseas reintentar?",
+                    new RestartLevelCommand(),
+                    new ReturnToMenuCommand()
+                );
 
-            Time.timeScale = 0f; // Pausa física del juego
+                popupChannel.Raise(deathPopupData);
+            }
+            else
+            {
+                Debug.LogWarning("[PlayerHealth] No se asignó el canal PopupEventSO en el Inspector.");
+            }
         }
 
         private void OnTriggerStay2D(Collider2D collision)
