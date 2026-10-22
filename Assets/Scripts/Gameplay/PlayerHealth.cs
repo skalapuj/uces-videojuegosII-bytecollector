@@ -133,7 +133,18 @@ namespace ByteCollector.Gameplay
             // Desplegar modal de Game Over
             if (gameOverPanel != null)
             {
-                gameOverPanel.SetActive(true);
+                PopupData deathPopupData = new PopupData(
+                    "MEMORY OVERFLOW",
+                    "¿Deseas reintentar?",
+                    new RestartLevelCommand(),
+                    new ReturnToMenuCommand()
+                );
+
+                popupChannel.Raise(deathPopupData);
+            }
+            else
+            {
+                Debug.LogWarning("[PlayerHealth] No se asignó el canal PopupEventSO en el Inspector.");
             }
 
             Time.timeScale = 0f; // Pausa física del juego
