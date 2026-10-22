@@ -132,8 +132,8 @@ namespace ByteCollector.Gameplay
             if (popupChannel != null)
             {
                 PopupData deathPopupData = new PopupData(
-                    "SISTEMA COLAPSADO",
-                    "¿Deseas reiniciar el sector actual?",
+                    "MEMORY OVERFLOW",
+                    "¿Deseas reintentar?",
                     new RestartLevelCommand(),
                     new ReturnToMenuCommand()
                 );
