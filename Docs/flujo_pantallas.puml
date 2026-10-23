@@ -46,6 +46,21 @@ state 03_Gameplay {
     03_Gameplay : • Avatar Provisional ("Byte")
     03_Gameplay : • HUD con botón Pausa / Menú
     03_Gameplay : • GameplayNavigation.cs
+
+    state Jugando {
+        Jugando : • Partida en curso (Time.timeScale = 1)
+        Jugando : • PlayerHealth controla las vidas
+    }
+
+    state Popup_Generic <<modal>> {
+        Popup_Generic : • Modal superpuesto a 03_Gameplay
+        Popup_Generic : • PopupManager + GenericPopupView
+        Popup_Generic : • "MEMORY OVERFLOW" / ¿Deseas reintentar?
+        Popup_Generic : • Juego en pausa (Time.timeScale = 0)
+    }
+
+    Jugando --> Popup_Generic : Vidas = 0 (PopupEventSO.Raise)
+    Popup_Generic --> Jugando : Confirmar (RestartLevelCommand: recarga de escena / reinicio de sector)
 }
 
 state 02_Credits {
@@ -55,6 +70,7 @@ state 02_Credits {
 }
 
 03_Gameplay --> 01_MainMenu : Clic "Pausa / Volver"
+Popup_Generic --> 01_MainMenu : Cancelar (ReturnToMenuCommand → LoadScene "01_MainMenu")
 02_Credits --> 01_MainMenu : Clic "Volver al Menú"
 01_MainMenu --> [*] : Clic "Salir" (Application.Quit)
 

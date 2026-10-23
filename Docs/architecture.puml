@@ -30,6 +30,7 @@ package "ByteCollector.Gameplay" {
         - isDead: bool
         - spriteRenderer: SpriteRenderer
         - playerController: PlayerController
+        - popupChannel: PopupEventSO
         + CurrentLives: int
         + IsDead: bool
         + TakeDamage(damage: int): void
@@ -129,11 +130,6 @@ package "ByteCollector.UI" {
         + UpdateScore(newScore: int): void
     }
 
-    class GameOverUI {
-        + RestartGame(): void
-        + GoToMainMenu(): void
-    }
-
     class UIManager {
         - panelMain: GameObject
         - panelOptions: GameObject
@@ -146,6 +142,59 @@ package "ByteCollector.UI" {
         + ShowMainMenu(): void
         + ShowOptions(): void
         + ShowCredits(): void
+    }
+
+    class PopupManager {
+        - popupChannel: PopupEventSO
+        - popupViewInstance: GenericPopupView
+        - OnEnable(): void
+        - OnDisable(): void
+        - ShowPopup(data: PopupData): void
+        - HandlePopupClosed(): void
+    }
+
+    class GenericPopupView {
+        - txtTitle: TextMeshProUGUI
+        - txtMessage: TextMeshProUGUI
+        - btnConfirm: Button
+        - btnCancel: Button
+        - confirmCommand: ICommand
+        - cancelCommand: ICommand
+        + OnPopupClosed: event Action
+        + Configure(data: PopupData): void
+        - HandleConfirmClicked(): void
+        - HandleCancelClicked(): void
+        + Close(): void
+    }
+}
+
+package "ByteCollector.Events" {
+    class PopupEventSO <<ScriptableObject>> {
+        + OnPopupRequested: event Action<PopupData>
+        + Raise(data: PopupData): void
+    }
+
+    class PopupData {
+        + Title: string
+        + Message: string
+        + ConfirmCommand: ICommand
+        + CancelCommand: ICommand
+        + PopupData(title, message, confirmCommand, cancelCommand)
+    }
+}
+
+package "ByteCollector.Commands" {
+    interface ICommand {
+        + Execute(): void
+    }
+
+    class RestartLevelCommand {
+        + Execute(): void
+    }
+
+    class ReturnToMenuCommand {
+        - {static} MAIN_MENU_SCENE: string
+        + Execute(): void
     }
 }
 
@@ -160,7 +209,6 @@ package "Entities tagged as Hazard / Glitch" {
 PlayerHealth --> PlayerController : desactiva movimiento y frena
 PlayerHealth --> HUDController : actualiza vidas
 PlayerHealth ..> ObstacleEntity : detecta Hazard / Glitch
-PlayerHealth --> GameOverUI : activa panel de fin de partida
 
 DataBit --> BitSpawner : notifica recolección
 BitSpawner ..> DataBit : instancia prefabricados
@@ -181,6 +229,17 @@ GlitchEnemy --> PlayerController : persigue con Vector2.MoveTowards
 GlitchEnemy ..|> ObstacleEntity : tag Hazard
 CorruptedTile ..|> ObstacleEntity : tag Hazard (fase activa)
 
-' Relaciones de navegación UI
-UIManager --> GameOverUI : navegación de menú y escenas
+' Servicio de pop-up reutilizable: Observer (evento) + Command (acciones)
+PlayerHealth --> PopupEventSO : Raise(PopupData) al quedar sin vidas (emisor)
+PlayerHealth ..> PopupData : crea con título y mensaje
+PlayerHealth ..> RestartLevelCommand : crea (confirmar)
+PlayerHealth ..> ReturnToMenuCommand : crea (cancelar)
+PopupManager ..> PopupEventSO : se suscribe a OnPopupRequested (receptor)
+PopupEventSO ..> PopupData : transporta
+PopupData o-- ICommand : ConfirmCommand / CancelCommand
+RestartLevelCommand ..|> ICommand
+ReturnToMenuCommand ..|> ICommand
+PopupManager --> GenericPopupView : Configure(data) y activa el pop-up
+GenericPopupView ..> PopupManager : evento OnPopupClosed
+GenericPopupView --> ICommand : Execute() al pulsar un botón
 @enduml
