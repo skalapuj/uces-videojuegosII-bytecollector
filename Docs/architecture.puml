@@ -130,11 +130,6 @@ package "ByteCollector.UI" {
         + UpdateScore(newScore: int): void
     }
 
-    class GameOverUI {
-        + RestartGame(): void
-        + GoToMainMenu(): void
-    }
-
     class UIManager {
         - panelMain: GameObject
         - panelOptions: GameObject
@@ -233,9 +228,6 @@ GlitchEnemy ..> GameLoopManager : se suscribe a MemoryFlushed y se destruye
 GlitchEnemy --> PlayerController : persigue con Vector2.MoveTowards
 GlitchEnemy ..|> ObstacleEntity : tag Hazard
 CorruptedTile ..|> ObstacleEntity : tag Hazard (fase activa)
-
-' Relaciones de navegación UI
-UIManager --> GameOverUI : navegación de menú y escenas
 
 ' Servicio de pop-up reutilizable: Observer (evento) + Command (acciones)
 PlayerHealth --> PopupEventSO : Raise(PopupData) al quedar sin vidas (emisor)
