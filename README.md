@@ -30,11 +30,11 @@ La implementación actual responde a una estructura simple pero funcional:
 
 ## 🗺️ Diagrama de arquitectura
 El flujo de navegación entre escenas y paneles modales está modelado mediante **PlantUML** en el archivo [`Docs/flujo_pantallas.puml`](Docs/flujo_pantallas.puml).
-![Flujo de Pantallas y Navegación](Docs/flujo_pantallas.png)
+![Flujo de Pantallas y Navegación](Docs/Imagenes/Arquitectura/flujo_pantallas.png)
 
 El diagrama de clases que detalla la relación entre controladores, gestores de ciclo de vida y entidades de colisión se encuentra modelado en [`Docs/architecture.puml`](Docs/architecture.puml).
 
-![Arquitectura](Docs/architecture.png)
+![Arquitectura](Docs/Imagenes/Arquitectura/architecture.png)
 ---
 
 ## 📐 Diagrama de clases actual
