@@ -23,6 +23,12 @@ namespace ByteCollector.Gameplay
         [Header("Eventos de UI (Observer)")]
         [SerializeField] private PopupEventSO popupChannel;
 
+        [Header("Depuración Visual (Gizmos / DrawRay)")]
+        [SerializeField] private bool showDebugGizmos = true;
+
+        private Collider2D _playerCollider;
+        private bool _isTakingHazardDamage;
+
         private SpriteRenderer spriteRenderer;
         private PlayerController playerController;
         private bool isInvulnerable = false;
@@ -36,6 +42,7 @@ namespace ByteCollector.Gameplay
             currentLives = maxLives;
             spriteRenderer = GetComponent<SpriteRenderer>();
             playerController = GetComponent<PlayerController>();
+            _playerCollider = GetComponent<Collider2D>();
         }
 
         private void Start()
@@ -62,6 +69,12 @@ namespace ByteCollector.Gameplay
 
             if (other.CompareTag("Hazard") || other.CompareTag("Glitch"))
             {
+                _isTakingHazardDamage = true;
+
+                // Traza una línea roja hacia el objeto 'other' y un rayo amarillo direccional durante 0.5s
+                Debug.DrawLine(transform.position, other.transform.position, Color.red, 0.5f);
+                Debug.DrawRay(transform.position, (other.transform.position - transform.position).normalized * 1.5f, Color.yellow, 0.5f);
+
                 TakeDamage(1);
             }
         }
@@ -111,6 +124,7 @@ namespace ByteCollector.Gameplay
                 spriteRenderer.color = originalColor;
             }
             isInvulnerable = false;
+            _isTakingHazardDamage = false;
         }
 
         private void TriggerGameOver()
@@ -150,9 +164,24 @@ namespace ByteCollector.Gameplay
         {
             CheckHazardCollision(collision.gameObject);
         }
+
         private void OnCollisionStay2D(Collision2D collision)
         {
             CheckHazardCollision(collision.gameObject);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!showDebugGizmos) return;
+
+            Collider2D col = _playerCollider != null ? _playerCollider : GetComponent<Collider2D>();
+            if (col == null) return;
+
+            // Verde si esta a salvo, Rojo si esta colisionando con un peligro
+            Gizmos.color = _isTakingHazardDamage ? Color.red : Color.green;
+
+            // Dibuja el volumen exacto del Bounds del Collider2D en la vista Scene
+            Gizmos.DrawWireCube(col.bounds.center, col.bounds.size);
         }
     }
 }
