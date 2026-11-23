@@ -1143,8 +1143,9 @@ MonoBehaviour:
   currentLives: 0
   invulnerabilityDuration: 1
   blinkInterval: 0.1
-  hudController: {fileID: 1068470241}
   popupChannel: {fileID: 11400000, guid: 3693197efc5694141b789ac13afdfba6, type: 2}
+  onHealthChangedChannel: {fileID: 11400000, guid: 5d225ac779a8d3743b5930c57e0f2ceb, type: 2}
+  showDebugGizmos: 1
 --- !u!1 &1068470239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,6 +1197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6ab60da79e71245995baf53e14bcb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onHealthChangedChannel: {fileID: 11400000, guid: 5d225ac779a8d3743b5930c57e0f2ceb, type: 2}
   healthIcons:
   - {fileID: 1483133055}
   - {fileID: 170312047}
