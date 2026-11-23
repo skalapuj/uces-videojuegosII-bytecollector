@@ -11,16 +11,22 @@ namespace ByteCollector.UI
         [Header("Vista del Pop-up")]
         [SerializeField] private GenericPopupView popupViewInstance;
 
+        private void Awake()
+        {
+            Debug.Assert(popupChannel != null, $"[PopupManager] Falta asignar 'popupChannel' (PopupEventSO) en {gameObject.name}.", this);
+            Debug.Assert(popupViewInstance != null, $"[PopupManager] Falta asignar 'popupViewInstance' (GenericPopupView) en {gameObject.name}.", this);
+
+            if (popupViewInstance != null)
+            {
+                popupViewInstance.gameObject.SetActive(false);
+            }
+        }
+
         private void OnEnable()
         {
             if (popupChannel != null)
             {
                 popupChannel.OnPopupRequested += ShowPopup;
-            }
-
-            if (popupViewInstance != null)
-            {
-                popupViewInstance.OnPopupClosed += HandlePopupClosed;
             }
         }
 
@@ -29,11 +35,6 @@ namespace ByteCollector.UI
             if (popupChannel != null)
             {
                 popupChannel.OnPopupRequested -= ShowPopup;
-            }
-
-            if (popupViewInstance != null)
-            {
-                popupViewInstance.OnPopupClosed -= HandlePopupClosed;
             }
         }
 
