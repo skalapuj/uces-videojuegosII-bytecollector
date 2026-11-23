@@ -43,6 +43,10 @@ namespace ByteCollector.Gameplay
             spriteRenderer = GetComponent<SpriteRenderer>();
             playerController = GetComponent<PlayerController>();
             _playerCollider = GetComponent<Collider2D>();
+
+            Debug.Assert(_playerCollider != null, $"[PlayerHealth] No se encontró Collider2D en {gameObject.name}.", this);
+            Debug.Assert(popupChannel != null, $"[PlayerHealth] Falta asignar el canal 'popupChannel' en {gameObject.name}.", this);
+            Debug.Assert(hudController != null, $"[PlayerHealth] Falta asignar 'hudController' en {gameObject.name}.", this);
         }
 
         private void Start()
