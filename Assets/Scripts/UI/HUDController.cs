@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using ByteCollector.Events;
 
 namespace ByteCollector.UI
 {
     public class HUDController : MonoBehaviour
     {
+        [Header("Canales de Eventos (Observer)")]
+        [SerializeField] private IntEventSO onHealthChangedChannel;
+
         [Header("Integridad / Vidas")]
         [SerializeField] private Image[] healthIcons;
         [SerializeField] private Color healthActiveColor = new Color(0.886f, 0.047f, 0.047f, 1.0f); // Rojo fuerte
@@ -17,6 +21,27 @@ namespace ByteCollector.UI
 
         [Header("Puntuación")]
         [SerializeField] private TextMeshProUGUI scoreText;
+
+        private void Awake()
+        {
+            Debug.Assert(onHealthChangedChannel != null, $"[HUDController] Falta asignar 'onHealthChangedChannel' (IntEventSO) en {gameObject.name}.", this);
+        }
+
+        private void OnEnable()
+        {
+            if (onHealthChangedChannel != null)
+            {
+                onHealthChangedChannel.OnEventRaised += UpdateHealth;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (onHealthChangedChannel != null)
+            {
+                onHealthChangedChannel.OnEventRaised -= UpdateHealth;
+            }
+        }
 
         public void UpdateHealth(int currentLives)
         {

@@ -17,11 +17,9 @@ namespace ByteCollector.Gameplay
         [SerializeField] private float invulnerabilityDuration = 1.0f;
         [SerializeField] private float blinkInterval = 0.1f;
 
-        [Header("Referencias")]
-        [SerializeField] private HUDController hudController;
-
         [Header("Eventos de UI (Observer)")]
         [SerializeField] private PopupEventSO popupChannel;
+        [SerializeField] private IntEventSO onHealthChangedChannel;
 
         [Header("Depuración Visual (Gizmos / DrawRay)")]
         [SerializeField] private bool showDebugGizmos = true;
@@ -46,15 +44,12 @@ namespace ByteCollector.Gameplay
 
             Debug.Assert(_playerCollider != null, $"[PlayerHealth] No se encontró Collider2D en {gameObject.name}.", this);
             Debug.Assert(popupChannel != null, $"[PlayerHealth] Falta asignar el canal 'popupChannel' en {gameObject.name}.", this);
-            Debug.Assert(hudController != null, $"[PlayerHealth] Falta asignar 'hudController' en {gameObject.name}.", this);
+            Debug.Assert(onHealthChangedChannel != null, $"[PlayerHealth] Falta asignar 'hudController' en {gameObject.name}.", this);
         }
 
         private void Start()
         {
-            if (hudController != null)
-            {
-                hudController.UpdateHealth(currentLives);
-            }
+            onHealthChangedChannel?.Raise(currentLives);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -89,10 +84,7 @@ namespace ByteCollector.Gameplay
 
             currentLives = Mathf.Max(0, currentLives - damage);
 
-            if (hudController != null)
-            {
-                hudController.UpdateHealth(currentLives);
-            }
+            onHealthChangedChannel?.Raise(currentLives);
 
             if (currentLives <= 0)
             {
