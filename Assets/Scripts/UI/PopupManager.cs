@@ -28,6 +28,11 @@ namespace ByteCollector.UI
             {
                 popupChannel.OnPopupRequested += ShowPopup;
             }
+
+            if (popupViewInstance != null)
+            {
+                popupViewInstance.OnPopupClosed += HandlePopupClosed;
+            }
         }
 
         private void OnDisable()
@@ -35,6 +40,11 @@ namespace ByteCollector.UI
             if (popupChannel != null)
             {
                 popupChannel.OnPopupRequested -= ShowPopup;
+            }
+
+            if (popupViewInstance != null)
+            {
+                popupViewInstance.OnPopupClosed -= HandlePopupClosed;
             }
         }
 
