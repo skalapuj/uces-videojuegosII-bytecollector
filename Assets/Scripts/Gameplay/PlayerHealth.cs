@@ -44,7 +44,7 @@ namespace ByteCollector.Gameplay
 
             Debug.Assert(_playerCollider != null, $"[PlayerHealth] No se encontró Collider2D en {gameObject.name}.", this);
             Debug.Assert(popupChannel != null, $"[PlayerHealth] Falta asignar el canal 'popupChannel' en {gameObject.name}.", this);
-            Debug.Assert(onHealthChangedChannel != null, $"[PlayerHealth] Falta asignar 'hudController' en {gameObject.name}.", this);
+            Debug.Assert(onHealthChangedChannel != null, $"[PlayerHealth] Falta asignar 'onHealthChangedChannel' (IntEventSO) en {gameObject.name}.", this);
         }
 
         private void Start()
